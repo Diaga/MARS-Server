@@ -1,5 +1,5 @@
 # django-api-template
-[![Build Status](https://api.travis-ci.com/Diaga/MARS-Server.svg?branch=master)](https://travis-ci.com/Diaga/django-api-template)
+[![Build Status](https://api.travis-ci.com/Diaga/MARS-Server.svg?token=ymmkUFtxjsN4DBFG6epB&branch=master)](https://travis-ci.com/Diaga/django-api-template)
 
 Template for creating robust APIs with django rest framework!
 
