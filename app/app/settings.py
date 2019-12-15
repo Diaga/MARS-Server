@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'core',
+    'user',
+    'record'
 ]
 
 MIDDLEWARE = [
@@ -128,4 +131,4 @@ MEDIA_ROOT = '/vol/web/media'
 
 # Declare custom user model
 
-AUTH_USER_MODEL = 'core.User'
+AUTH_USER_MODEL = 'user.User'
