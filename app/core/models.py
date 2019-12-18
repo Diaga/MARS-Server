@@ -8,8 +8,8 @@ class Patient(models.Model):
     """Patient model"""
     id = models.UUIDField(default=uuid4, primary_key=True, editable=False)
 
-    weight = models.FloatField(null=True)
-    height = models.FloatField(null=True)
+    weight = models.FloatField(blank=True, null=True)
+    height = models.FloatField(blank=True, null=True)
     date_of_birth = models.DateTimeField(null=True)
 
     guardian_name = models.CharField(max_length=255, blank=True)
@@ -24,11 +24,66 @@ class Patient(models.Model):
         app_label = 'user'
 
 
+class Nurse(models.Model):
+    """Nurse model"""
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+
+    qualification = models.CharField(max_length=255, blank=True)
+    institution = models.CharField(max_length=255, blank=True)
+    date_joined = models.DateTimeField(blank=True, null=True)
+    start_timings = models.DateTimeField(blank=True, null=True)
+    end_timings = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.cnic
+
+    class Meta:
+        app_label = 'user'
+
+
+class Doctor(models.Model):
+    """Doctor model"""
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+
+    speciality = models.CharField(max_length=255, blank=True)
+    qualification = models.CharField(max_length=255, blank=True)
+    medical_college = models.CharField(max_length=255, blank=True)
+    date_joined = models.DateTimeField(blank=True, null=True)
+    start_timings = models.DateTimeField(blank=True, null=True)
+    end_timings = models.DateTimeField(blank=True, null=True)
+    nurse_assigned = models.ForeignKey(Nurse, on_delete=models.SET_NULL,
+                                       null=True, blank=True)
+
+    def __str__(self):
+        return self.user.name
+
+    class Meta:
+        app_label = 'user'
+
+
+class Admin(models.Model):
+    """Admin model"""
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+
+    date_joined = models.DateTimeField(blank=True, null=True)
+    start_timings = models.DateTimeField(blank=True, null=True)
+    end_timings = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.name
+
+    class Meta:
+        app_label = 'user'
+
+
 class UserManager(BaseUserManager):
     """Manager for User model"""
+
     def create_user(self, cnic, password, **extra_fields):
         """Creates and saves a new user"""
-        user = self.model(cnic, **extra_fields)
+        if not password:
+            raise ValueError("Password is required!")
+        user = self.model(cnic=cnic, **extra_fields)
         user.set_password(password)
         user.save()
 
@@ -40,18 +95,19 @@ class UserManager(BaseUserManager):
         user.is_staff = True
         user.is_superuser = True
         user.save()
+        return user
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     """User model"""
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
 
-    email = models.EmailField(max_length=255, unique=True, blank=True)
+    email = models.EmailField(max_length=255, blank=True)
     contact = models.CharField(max_length=255, blank=True)
     cnic = models.CharField(max_length=255, unique=True)
     emergency_contact = models.CharField(max_length=255, blank=True)
 
-    name = models.CharField(max_length=255, blank=True)
+    first_name = models.CharField(max_length=255, blank=True)
     middle_name = models.CharField(max_length=255, blank=True)
     last_name = models.CharField(max_length=255, blank=True)
 
@@ -61,7 +117,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     gender = models.CharField(max_length=255, default='male')
 
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    group = models.CharField(max_length=255)
+
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,
+                                null=True, blank=True)
+    nurse = models.ForeignKey(Nurse, on_delete=models.CASCADE,
+                              null=True, blank=True)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE,
+                               null=True, blank=True)
+    admin = models.ForeignKey(Admin, on_delete=models.CASCADE,
+                              null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -76,6 +141,8 @@ class User(AbstractBaseUser, PermissionsMixin):
                                    related_name='updated_users')
 
     USERNAME_FIELD = 'cnic'
+
+    objects = UserManager()
 
     @property
     def role(self):

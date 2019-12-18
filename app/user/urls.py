@@ -32,22 +32,10 @@ router.routes += [
         detail=True,
         initkwargs={'suffix': 'Detail'}
     ),
-
-    # User List Route
-    Route(
-        url=r'^users{trailing_slash}',
-        mapping={
-            'get': 'list_users',
-        },
-        name='user-list',
-        detail=False,
-        initkwargs={'suffix': 'List'}
-    )
 ]
 
 router.register('user', views.UserViewSet)
 router.register('user', views.UserDetailViewSet)
-router.register('user', views.UserListViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
