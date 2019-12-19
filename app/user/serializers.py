@@ -71,40 +71,82 @@ class UserSerializer(ModelBySerializer):
         },
     )
 
-    patient = PatientSerializer(write_only=True, allow_null=True)
-    nurse = NurseSerializer(write_only=True, allow_null=True)
-    doctor = DoctorSerializer(write_only=True, allow_null=True)
-    admin = AdminSerializer(write_only=True, allow_null=True)
+    patient = PatientSerializer(write_only=True, required=False)
+    nurse = NurseSerializer(write_only=True, required=False)
+    doctor = DoctorSerializer(write_only=True, required=False)
+    admin = AdminSerializer(write_only=True, required=False)
 
     class Meta:
         model = User
         fields = ('id', 'cnic', 'password', 'email', 'contact',
-                  'emergency_contact', 'first_name', 'middle_name', 'last_name'
-                  , 'city', 'country', 'address', 'gender', 'group', 'patient',
-                  'created_at', 'updated_at', 'created_by', 'updated_by',
-                  'admin', 'nurse', 'doctor', 'role')
+                  'emergency_contact', 'first_name', 'middle_name',
+                  'last_name', 'city', 'country', 'address', 'gender', 'group',
+                  'patient', 'created_at', 'updated_at', 'created_by',
+                  'updated_by', 'admin', 'nurse', 'doctor', 'role')
         read_only_fields = ('id', 'created_at', 'updated_at', 'created_by',
                             'updated_by', 'role')
 
     def create(self, validated_data):
-        group = validated_data.pop('group')
+        group = validated_data.pop('group', None)
         password = validated_data.pop('password')
 
-        patient_data = validated_data.pop('patient')
-        nurse_data = validated_data.pop('nurse')
-        doctor_data = validated_data.pop('doctor')
-        admin_data = validated_data.pop('admin')
+        patient_data = validated_data.pop('patient', None)
+        nurse_data = validated_data.pop('nurse', None)
+        doctor_data = validated_data.pop('doctor', None)
+        admin_data = validated_data.pop('admin', None)
 
         user = super(UserSerializer, self).create(validated_data)
         user.set_password(password)
+
+        if patient_data is not None and group == 'patient':
+            patient_serializer = PatientSerializer(data=patient_data)
+            if patient_serializer.is_valid(raise_exception=True):
+                user.patient = patient_serializer.save()
+        elif nurse_data is not None and group == 'nurse':
+            nurse_serializer = NurseSerializer(data=nurse_data)
+            if nurse_serializer.is_valid(raise_exception=True):
+                user.nurse = nurse_serializer.save()
+        elif doctor_data is not None and group == 'doctor':
+            doctor_serializer = DoctorSerializer(data=doctor_data)
+            if doctor_serializer.is_valid(raise_exception=True):
+                user.doctor = doctor_serializer.save()
+        elif admin_data is not None and group == 'admin':
+            admin_serializer = AdminSerializer(data=admin_data)
+            if admin_serializer.is_valid(raise_exception=True):
+                user.admin = admin_serializer.save()
+
         user.save()
         return user
 
     def update(self, instance, validated_data):
         group = validated_data.pop('group')
         password = validated_data.pop('password')
+
+        patient_data = validated_data.pop('patient', None)
+        nurse_data = validated_data.pop('nurse', None)
+        doctor_data = validated_data.pop('doctor', None)
+        admin_data = validated_data.pop('admin', None)
+
         user = super(UserSerializer, self).update(instance, validated_data)
         user.set_password(password)
+
+        if patient_data is not None and group == 'patient':
+            PatientSerializer(
+                user.patient, data=patient_data, partial=True
+            )
+        elif nurse_data is not None and group == 'nurse':
+            NurseSerializer(
+                user.nurse, data=nurse_data, partial=True
+            )
+        elif doctor_data is not None and group == 'doctor':
+            DoctorSerializer(
+                user.doctor, data=doctor_data, partial=True
+            )
+        elif admin_data is not None and group == 'admin':
+            AdminSerializer(
+                user.admin, data=admin_data, partial=True
+            )
+
         user.save()
         return user
 

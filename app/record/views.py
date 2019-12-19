@@ -266,4 +266,3 @@ class AllergyDetailViewSet(viewsets.GenericViewSet,
     def destroy_allergy_by_id(self, request, *args, **kwargs):
         """Wrapper around delete method for view set distinction"""
         return self.destroy(request, *args, **kwargs)
-

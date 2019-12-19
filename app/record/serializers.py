@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import MedicalHistory, Visit, Allergy, Prescription
+from core.models import MedicalHistory, Visit, Allergy, Prescription, User
 from core.serializers import ModelBySerializer
 from user.serializers import UserSerializer
 
@@ -10,13 +10,16 @@ class MedicalHistorySerializer(ModelBySerializer):
 
     created_by = UserSerializer(read_only=True)
     updated_by = UserSerializer(read_only=True)
-    patient = UserSerializer(read_only=True)
+    patient = UserSerializer(required=False)
+    patient_id = serializers.PrimaryKeyRelatedField(
+        source='patient', queryset=User.objects.all()
+    )
 
     class Meta:
         model = MedicalHistory
         fields = ('id', 'type', 'description', 'happened_at',
                   'patient', 'created_at', 'updated_at', 'created_by',
-                  'updated_by', 'patient')
+                  'updated_by', 'patient', 'patient_id')
         read_only_fields = ('id', 'created_at', 'updated_at',
                             'created_by', 'updated_by')
 

@@ -114,10 +114,6 @@ router.routes += [
     )
 ]
 
-urlpatterns = [
-    path('', include(router.urls))
-]
-
 router.register('record', views.MedicalHistoryViewSet)
 router.register('record', views.MedicalHistoryDetailViewSet)
 router.register('record', views.PrescriptionViewSet)
@@ -126,3 +122,7 @@ router.register('record', views.VisitViewSet)
 router.register('record', views.VisitDetailViewSet)
 router.register('record', views.AllergyViewSet)
 router.register('record', views.AllergyDetailViewSet)
+
+urlpatterns = [
+    path('', include(router.urls)),
+]
