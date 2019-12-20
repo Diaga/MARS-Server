@@ -211,7 +211,7 @@ class Prescription(models.Model):
     medicine = models.CharField(max_length=255)
     dose = models.CharField(max_length=255, blank=True)
     frequency = models.CharField(max_length=255, blank=True)
-    notes = models.TextField()
+    notes = models.TextField(blank=True)
 
     patient = models.ForeignKey(User, on_delete=models.CASCADE)
 

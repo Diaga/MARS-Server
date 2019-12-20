@@ -54,7 +54,7 @@ router.routes += [
         mapping={
             'get': 'view_visit_by_id',
             'patch': 'update_visit_by_id',
-            'delete': 'delete_visit_by_id'
+            'delete': 'destroy_visit_by_id'
         },
         name='visit-detail',
         detail=True,

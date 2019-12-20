@@ -1,3 +1,4 @@
+from django.utils import timezone
 from . import models
 
 
@@ -23,3 +24,19 @@ def sample_user(cnic='sample_user', password='testpass', group=None,
 def sample_medical_history(**extra_fields):
     """Creates a sample medical history"""
     return models.MedicalHistory.objects.create(**extra_fields)
+
+
+def sample_visit(visited_at=timezone.now(), **extra_fields):
+    """Creates a sample visit"""
+    return models.Visit.objects.create(visited_at=visited_at, **extra_fields)
+
+
+def sample_allergy(name='test_allergy', **extra_fields):
+    """Creates a sample allergy"""
+    return models.Allergy.objects.create(name=name, **extra_fields)
+
+
+def sample_prescription(medicine='test_medicine', **extra_fields):
+    """Creates a sample prescription"""
+    return models.Prescription.objects.create(medicine=medicine,
+                                              **extra_fields)

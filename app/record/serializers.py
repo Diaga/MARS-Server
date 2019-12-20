@@ -10,7 +10,7 @@ class MedicalHistorySerializer(ModelBySerializer):
 
     created_by = UserSerializer(read_only=True)
     updated_by = UserSerializer(read_only=True)
-    patient = UserSerializer(required=False)
+    patient = UserSerializer(read_only=True, required=False)
     patient_id = serializers.PrimaryKeyRelatedField(
         source='patient', queryset=User.objects.all()
     )
@@ -29,13 +29,16 @@ class VisitSerializer(ModelBySerializer):
 
     created_by = UserSerializer(read_only=True)
     updated_by = UserSerializer(read_only=True)
-    patient = UserSerializer(read_only=True)
+    patient = UserSerializer(read_only=True, required=False)
+    patient_id = serializers.PrimaryKeyRelatedField(
+        source='patient', queryset=User.objects.all()
+    )
 
     class Meta:
         model = Visit
         fields = ('id', 'purpose', 'visited_at',
                   'patient', 'created_at', 'updated_at', 'created_by',
-                  'updated_by', 'patient')
+                  'updated_by', 'patient_id')
         read_only_fields = ('id', 'created_at', 'updated_at',
                             'created_by', 'updated_by')
 
@@ -45,13 +48,16 @@ class AllergySerializer(ModelBySerializer):
 
     created_by = UserSerializer(read_only=True)
     updated_by = UserSerializer(read_only=True)
-    patient = UserSerializer(read_only=True)
+    patient = UserSerializer(read_only=True, required=False)
+    patient_id = serializers.PrimaryKeyRelatedField(
+        source='patient', queryset=User.objects.all()
+    )
 
     class Meta:
         model = Allergy
         fields = ('id', 'name', 'description',
                   'patient', 'created_at', 'updated_at', 'created_by',
-                  'updated_by', 'patient')
+                  'updated_by', 'patient_id')
         read_only_fields = ('id', 'created_at', 'updated_at',
                             'created_by', 'updated_by')
 
@@ -61,12 +67,15 @@ class PrescriptionSerializer(ModelBySerializer):
 
     created_by = UserSerializer(read_only=True)
     updated_by = UserSerializer(read_only=True)
-    patient = UserSerializer(read_only=True)
+    patient = UserSerializer(read_only=True, required=False)
+    patient_id = serializers.PrimaryKeyRelatedField(
+        source='patient', queryset=User.objects.all()
+    )
 
     class Meta:
         model = Prescription
         fields = ('id', 'medicine', 'dose', 'frequency', 'notes',
                   'patient', 'created_at', 'updated_at', 'created_by',
-                  'updated_by', 'patient')
+                  'updated_by', 'patient_id')
         read_only_fields = ('id', 'created_at', 'updated_at',
                             'created_by', 'updated_by')
