@@ -6,7 +6,7 @@ def sample_user(cnic='sample_user', password='testpass', group=None,
                 **extra_fields):
     """Creates a sample user in the system"""
     user = models.User.objects.create_user(
-        cnic=cnic, password=password, **extra_fields
+        cnic=cnic, password=password, group=group, **extra_fields
     )
     if group is not None:
         if group == 'patient':

@@ -87,7 +87,6 @@ class UserSerializer(ModelBySerializer):
                             'updated_by', 'role')
 
     def create(self, validated_data):
-        group = validated_data.pop('group', None)
         password = validated_data.pop('password')
 
         patient_data = validated_data.pop('patient', None)
@@ -98,19 +97,19 @@ class UserSerializer(ModelBySerializer):
         user = super(UserSerializer, self).create(validated_data)
         user.set_password(password)
 
-        if patient_data is not None and group == 'patient':
+        if patient_data is not None and user.group == 'patient':
             patient_serializer = PatientSerializer(data=patient_data)
             if patient_serializer.is_valid(raise_exception=True):
                 user.patient = patient_serializer.save()
-        elif nurse_data is not None and group == 'nurse':
+        elif nurse_data is not None and user.group == 'nurse':
             nurse_serializer = NurseSerializer(data=nurse_data)
             if nurse_serializer.is_valid(raise_exception=True):
                 user.nurse = nurse_serializer.save()
-        elif doctor_data is not None and group == 'doctor':
+        elif doctor_data is not None and user.group == 'doctor':
             doctor_serializer = DoctorSerializer(data=doctor_data)
             if doctor_serializer.is_valid(raise_exception=True):
                 user.doctor = doctor_serializer.save()
-        elif admin_data is not None and group == 'admin':
+        elif admin_data is not None and user.group == 'admin':
             admin_serializer = AdminSerializer(data=admin_data)
             if admin_serializer.is_valid(raise_exception=True):
                 user.admin = admin_serializer.save()
@@ -119,8 +118,7 @@ class UserSerializer(ModelBySerializer):
         return user
 
     def update(self, instance, validated_data):
-        group = validated_data.pop('group')
-        password = validated_data.pop('password')
+        password = validated_data.pop('password', None)
 
         patient_data = validated_data.pop('patient', None)
         nurse_data = validated_data.pop('nurse', None)
@@ -128,21 +126,22 @@ class UserSerializer(ModelBySerializer):
         admin_data = validated_data.pop('admin', None)
 
         user = super(UserSerializer, self).update(instance, validated_data)
-        user.set_password(password)
+        if password is not None:
+            user.set_password(password)
 
-        if patient_data is not None and group == 'patient':
+        if patient_data is not None and user.group == 'patient':
             PatientSerializer(
                 user.patient, data=patient_data, partial=True
             )
-        elif nurse_data is not None and group == 'nurse':
+        elif nurse_data is not None and user.group == 'nurse':
             NurseSerializer(
                 user.nurse, data=nurse_data, partial=True
             )
-        elif doctor_data is not None and group == 'doctor':
+        elif doctor_data is not None and user.group == 'doctor':
             DoctorSerializer(
                 user.doctor, data=doctor_data, partial=True
             )
-        elif admin_data is not None and group == 'admin':
+        elif admin_data is not None and user.group == 'admin':
             AdminSerializer(
                 user.admin, data=admin_data, partial=True
             )
