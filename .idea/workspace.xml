@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cc58a5b5-a2d6-4682-a4bf-fbe97661ff3a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/core/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/record/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/record/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/record/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/record/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/record/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/record/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/user/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/user/migrations/0002_auto_20191215_1632.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/user/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/user/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/user/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/user/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/user/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -111,7 +98,8 @@
       <workItem from="1575786466872" duration="1007000" />
       <workItem from="1575788449062" duration="29000" />
       <workItem from="1576405625330" duration="7580000" />
-      <workItem from="1576602530141" duration="13541000" />
+      <workItem from="1576602530141" duration="24708000" />
+      <workItem from="1576845988968" duration="8623000" />
     </task>
     <servers />
   </component>
