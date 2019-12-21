@@ -45,6 +45,12 @@ class UserViewSet(viewsets.GenericViewSet,
             ) | queryset.filter(
                 id=user.id
             )
+        userType = self.request.GET.get('type', None)
+        if userType is not None:
+        	if userType == 'self':
+        		queryset = queryset.filter(id=user.id)
+        	elif userType == 'patient':
+        		queryset = queryset.filter(group='patient')    
         return queryset.all()
 
     def view_user(self, request, *args, **kwargs):

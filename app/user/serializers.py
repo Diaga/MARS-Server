@@ -76,6 +76,8 @@ class UserSerializer(ModelBySerializer):
     doctor = DoctorSerializer(write_only=True, required=False)
     admin = AdminSerializer(write_only=True, required=False)
 
+    password = serializers.CharField(max_length=255, write_only=True)
+
     class Meta:
         model = User
         fields = ('id', 'cnic', 'password', 'email', 'contact',

@@ -55,7 +55,7 @@ class Doctor(models.Model):
                                        null=True, blank=True)
 
     def __str__(self):
-        return self.user.name
+        return self.user.cnic
 
     class Meta:
         app_label = 'user'
@@ -70,7 +70,7 @@ class Admin(models.Model):
     end_timings = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return self.user.name
+        return self.users.cnic
 
     class Meta:
         app_label = 'user'
@@ -119,14 +119,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     group = models.CharField(max_length=255)
 
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,
-                                null=True, blank=True)
-    nurse = models.ForeignKey(Nurse, on_delete=models.CASCADE,
-                              null=True, blank=True)
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE,
-                               null=True, blank=True)
-    admin = models.ForeignKey(Admin, on_delete=models.CASCADE,
-                              null=True, blank=True)
+    patient = models.OneToOneField(Patient, on_delete=models.CASCADE,
+                                   null=True, blank=True)
+    nurse = models.OneToOneField(Nurse, on_delete=models.CASCADE,
+                                 null=True, blank=True)
+    doctor = models.OneToOneField(Doctor, on_delete=models.CASCADE,
+                                  null=True, blank=True)
+    admin = models.OneToOneField(Admin, on_delete=models.CASCADE,
+                                 null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -153,6 +153,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         app_label = 'user'
+        default_related_name = 'users'
 
 
 class MedicalHistory(models.Model):
