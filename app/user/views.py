@@ -45,12 +45,13 @@ class UserViewSet(viewsets.GenericViewSet,
             ) | queryset.filter(
                 id=user.id
             )
-        userType = self.request.GET.get('type', None)
-        if userType is not None:
-        	if userType == 'self':
-        		queryset = queryset.filter(id=user.id)
-        	elif userType == 'patient':
-        		queryset = queryset.filter(group='patient')    
+
+        user_type = self.request.GET.get('type', None)
+        if user_type is not None:
+            if user_type == 'self':
+                queryset = queryset.filter(id=user.id)
+            elif user_type == 'patient':
+                queryset = queryset.filter(group='patient')
         return queryset.all()
 
     def view_user(self, request, *args, **kwargs):
@@ -83,7 +84,9 @@ class UserDetailViewSet(viewsets.GenericViewSet,
         queryset = super(UserDetailViewSet, self).get_queryset()
 
         if user.group == 'patient':
-            queryset = self.request.user
+            queryset = queryset.filter(
+                id=user.id
+            )
         elif user.group == 'nurse' or user.group == 'doctor':
             queryset = queryset.filter(
                 patient__isnull=False

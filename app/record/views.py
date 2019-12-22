@@ -26,6 +26,9 @@ class MedicalHistoryViewSet(viewsets.GenericViewSet,
         queryset = super(MedicalHistoryViewSet, self).get_queryset()
         if user.group == 'patient':
             queryset = queryset.filter(patient=user)
+        patient_id = self.request.GET.get('patient', None)
+        if patient_id is not None and patient_id != '':
+            queryset = queryset.filter(patient__id=patient_id)
         return queryset.all()
 
     def view_medical_history(self, request, *args, **kwargs):
@@ -91,6 +94,9 @@ class VisitViewSet(viewsets.GenericViewSet,
         queryset = super(VisitViewSet, self).get_queryset()
         if user.group == 'patient':
             queryset = queryset.filter(patient=user)
+        patient_id = self.request.GET.get('patient', None)
+        if patient_id is not None and patient_id != '':
+            queryset = queryset.filter(patient__id=patient_id)
         return queryset.all()
 
     def view_visit(self, request, *args, **kwargs):
@@ -156,6 +162,9 @@ class PrescriptionViewSet(viewsets.GenericViewSet,
         queryset = super(PrescriptionViewSet, self).get_queryset()
         if user.group == 'patient':
             queryset = queryset.filter(patient=user)
+        patient_id = self.request.GET.get('patient', None)
+        if patient_id is not None and patient_id != '':
+            queryset = queryset.filter(patient__id=patient_id)
         return queryset.all()
 
     def view_prescription(self, request, *args, **kwargs):
@@ -221,6 +230,9 @@ class AllergyViewSet(viewsets.GenericViewSet,
         queryset = super(AllergyViewSet, self).get_queryset()
         if user.group == 'patient':
             queryset = queryset.filter(patient=user)
+        patient_id = self.request.GET.get('patient', None)
+        if patient_id is not None and patient_id != '':
+            queryset = queryset.filter(patient__id=patient_id)
         return queryset.all()
 
     def view_allergy(self, request, *args, **kwargs):

@@ -17,9 +17,6 @@ class Patient(models.Model):
     guardian_relationship = models.CharField(max_length=255, blank=True)
     guardian_address = models.CharField(max_length=255, blank=True)
 
-    def __repr__(self):
-        return self.user.cnic
-
     class Meta:
         app_label = 'user'
 
@@ -54,9 +51,6 @@ class Doctor(models.Model):
     nurse_assigned = models.ForeignKey(Nurse, on_delete=models.SET_NULL,
                                        null=True, blank=True)
 
-    def __str__(self):
-        return self.user.cnic
-
     class Meta:
         app_label = 'user'
 
@@ -68,9 +62,6 @@ class Admin(models.Model):
     date_joined = models.DateTimeField(blank=True, null=True)
     start_timings = models.DateTimeField(blank=True, null=True)
     end_timings = models.DateTimeField(blank=True, null=True)
-
-    def __str__(self):
-        return self.users.cnic
 
     class Meta:
         app_label = 'user'
@@ -115,7 +106,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     country = models.CharField(max_length=255, blank=True)
     address = models.CharField(max_length=255, blank=True)
 
-    gender = models.CharField(max_length=255, default='male')
+    gender = models.CharField(max_length=255, default='male', blank=True)
 
     group = models.CharField(max_length=255)
 
